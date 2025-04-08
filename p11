@@ -1,0 +1,46 @@
+import numpy as np
+
+class GaussianFuzzy:
+    def __init__(self, mean, sigma):
+        self.mean = mean
+        self.sigma = sigma
+
+    def gaussian(self, x):
+        return np.exp(-0.5 * ((x - self.mean) / self.sigma) ** 2)
+
+    def area(self):
+        return self.sigma * np.sqrt(2 * np.pi)
+
+    def center(self):
+              return self.mean
+
+t_ba = GaussianFuzzy(mean=17.5, sigma=2.5)   
+t_l  = GaussianFuzzy(mean=12.5, sigma=2.5)   
+
+p_ba = GaussianFuzzy(mean=1.4, sigma=0.2)    
+p_l  = GaussianFuzzy(mean=1.0, sigma=0.2)    
+
+hp_mh = GaussianFuzzy(mean=4.0, sigma=0.4)   
+hp_h  = GaussianFuzzy(mean=5.5, sigma=0.4)   
+
+vo_ml = GaussianFuzzy(mean=1.75, sigma=0.25) 
+vo_s  = GaussianFuzzy(mean=1.0, sigma=0.2)  
+
+t = 17.5
+p = 1.3
+
+z1 = min(t_ba.gaussian(t), p_ba.gaussian(p))  
+z2 = min(t_l.gaussian(t), p_l.gaussian(p))    
+
+print("z1 =", round(z1, 4), "\nz2 =", round(z2, 4))
+
+def defuzzify(z1, z2, set1, set2):
+    num = (z1 * set1.area() * set1.center()) + (z2 * set2.area() * set2.center())
+    den = (z1 * set1.area()) + (z2 * set2.area())
+    return num / den if den != 0 else 0
+
+c1 = defuzzify(z1, z2, hp_mh, hp_h)  
+c2 = defuzzify(z1, z2, vo_ml, vo_s) 
+
+print("C1 (Heating Power) =", round(c1, 4))
+print("C2 (Valve Opening) =", round(c2, 4))
