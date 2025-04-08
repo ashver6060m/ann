@@ -1,0 +1,69 @@
+import numpy as np
+
+class ann():
+    def __init__(self):
+        self.weights = []
+
+        self.structure_layers_neurons = []
+        self.structure_activation = []
+    
+    def help(self):
+        pass
+
+    def addLayer(self,neurons,activation):
+        self.structure_layers_neurons.append(neurons)
+        self.structure_activation.append(activation)
+        self.weights.append(np.random.rand(neurons, 2).tolist())
+        pass
+    
+    def activation(self,z):
+        if self.structure_activation[0] == 'sigmoid':
+            return 1 /(1 + np.exp(-z))
+        elif self.structure_activation[0] == 'linear':
+            return 1 if z >= 0 else 0
+        pass
+
+    def forward(self,data):
+        layers_outputs = [data]
+        for layer in range(len(self.structure_layers_neurons)):
+            neurons_output = []
+            for neuron in range(self.structure_layers_neurons[layer]):
+                z = np.dot(layers_outputs[-1],self.weights[layer][neuron])
+                predicted_z = self.activation(z)
+                neurons_output.append(predicted_z)
+            layers_outputs.append(neurons_output)
+        return layers_outputs
+
+    def bacpropagation(self,epochs,X_train,y_train,learning_rate):
+        for _ in range(epochs):
+            for i in range(len(X_train)):
+                layers_outputs = self.forward(X_train[i])
+                y_pred = layers_outputs[-1][0]
+                y_true = y_train[i]
+                error = (y_true - y_pred)
+
+                output_layer_delta = error
+                for o in range(len(a.weights[-1])):
+                    for w in range(len(a.weights[-1][o])):
+                        self.weights[-1][o][w] += learning_rate * output_layer_delta * layers_outputs[-2][w]
+                
+                for h in range(len(self.weights[0])):
+                    delta = layers_outputs[-2][h] * (1 - layers_outputs[-2][h]) * self.weights[-1][0][h] * output_layer_delta
+                    for w in range(len(self.weights[0][h])):
+                        self.weights[0][h][w] += learning_rate * delta * layers_outputs[0][w]
+
+    def predict(self,X_test):
+        for i in range(len(X_test)):
+            print(self.forward(X_test[i]))
+
+
+# data = [[5,5],[9,9]]
+# y = [0,1]
+
+a = ann()
+a.addLayer(2,'sigmoid')
+a.addLayer(1,'sigmoid')
+a.bacpropagation(10,data,y,0.01)
+
+
+a.predict(data)
