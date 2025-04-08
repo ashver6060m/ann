@@ -1,10 +1,16 @@
 import numpy as np
+from sklearn.cluster import KMeans
+
 from sklearn.metrics import accuracy_score
 
 data = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 0]])
 X = data[:, 0:2]
 y = data[:, 2]
 
+k = 4  # number of RBF neurons / clusters
+kmeans = KMeans(n_clusters=k, random_state=0)
+kmeans.fit(X)
+centers = kmeans.cluster_centers_
 centers = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 k = len(centers)
 
