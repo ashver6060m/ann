@@ -1,0 +1,14 @@
+def activation(z):
+    return np.tanh(z) 
+def tanh_derivative(z):
+    return 1 - np.tanh(z) ** 2
+gradient = error * tanh_derivative(z)
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+def sigmoid_derivative(z):
+    s = sigmoid(z)
+    return s * (1 - s)
+y_pred = sigmoid(z)
+gradient = error * sigmoid_derivative(z)
+
