@@ -1,11 +1,12 @@
 p1 - perceptron
 p2 - activation
 p3 - multilayer perceptron
+p4 - rbf
 p5 - keras xor
 p6 - keras vine
 p7 - keras diab
 p8 - iris
 p9 - triang
-p10 - guess
-p11 - rbf
+p10 - trap
+p11 - guess
 https://github.com/C-0-3/nn/tree/main/MY
