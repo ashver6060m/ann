@@ -1,0 +1,28 @@
+import numpy as np
+
+def step_function(x):
+    return 1 if x >= 0 else 0
+
+def predict(x, weights):
+    x = np.insert(x, 0, 1)  # Add bias input (1 at the beginning)
+    z = np.dot(weights, x)
+    return step_function(z)
+
+def train(X, y, learning_rate=0.1, epochs=10):
+    weights = np.zeros(X.shape[1] + 1)  # +1 for bias
+    for _ in range(epochs):
+        for xi, target in zip(X, y):
+            xi_with_bias = np.insert(xi, 0, 1)
+            prediction = predict(xi, weights)
+            error = target - prediction
+            weights += learning_rate * error * xi_with_bias
+    return weights
+
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([0, 0, 0, 1])  # AND output
+
+weights = train(X, y)
+
+print("Predictions:")
+for xi in X:
+    print(f"{xi} => {predict(xi, weights)}")
